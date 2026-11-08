@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="th"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<meta name="theme-color" content="#1769c2">
+<meta name="description" content="Fuel Calculator KG and Liter - เครื่องคำนวณปริมาณเชื้อเพลิง">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Fuel Calc">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Fuel Calculator</title>
+<style>
+
+:root{--blue:#1769c2;--blue2:#2788ed;--navy:#102b4b;--ink:#17324d;--muted:#68809a;--line:#d8e6f4;--gold:#fff2c7;--goldink:#956000;--cyan:#dff7fa;--cyanink:#087f98;--shadow:0 8px 24px rgba(31,91,151,.10)}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#e8f3ff,#f7faff 42%,#edf4fb);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);min-height:100vh}button,input{font:inherit}
+.app{max-width:980px;margin:auto;padding:18px 16px 100px}.hero{position:relative;overflow:hidden;border-radius:26px;padding:24px;color:white;background:linear-gradient(120deg,#10345f,#1769c2 58%,#37a4ed);box-shadow:0 12px 28px #165ba33b}.hero:after{content:"";position:absolute;width:260px;height:260px;border:1px solid #ffffff29;border-radius:50%;right:-65px;top:-145px;box-shadow:0 0 0 24px #ffffff0d,0 0 0 52px #ffffff0a}.brand{font-size:clamp(25px,5vw,38px);font-weight:850;letter-spacing:-1.2px;line-height:1.1}.tagline{margin-top:7px;color:#d9ecff;font-size:13px;letter-spacing:1.5px;font-weight:650}.hero-note{margin-top:16px;font-size:13px;color:#eaf5ff}
+.tabs{display:flex;gap:8px;margin:18px 0 16px;padding:6px;background:#dceafa;border-radius:16px;position:sticky;top:8px;z-index:5;box-shadow:0 4px 14px #235b9114}.tab{flex:1;border:0;background:transparent;color:#45627f;padding:12px 8px;border-radius:12px;font-weight:750;cursor:pointer}.tab.active{background:white;color:var(--blue);box-shadow:0 3px 10px #1e538c1f}.panel{display:none}.panel.active{display:block}
+.section{margin-top:18px}.section-head{display:flex;align-items:center;gap:10px;margin:0 2px 10px}.section-icon{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:#dceeff;color:var(--blue);font-size:19px}h2{font-size:17px;margin:0;color:var(--navy);font-weight:820}.sub{font-size:12px;color:var(--muted);margin-top:3px}.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:15px;box-shadow:var(--shadow)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.metric{padding:14px;border-radius:16px;background:#f5f9ff;border:1px solid #e1edf8;min-width:0}.metric.dark{background:linear-gradient(145deg,#102d50,#164b83);border-color:#2a78c6;color:white}.label{font-size:12px;font-weight:700;color:#617991;line-height:1.35}.metric.dark .label{color:#e0efff}.value{font-size:clamp(25px,5vw,34px);font-weight:850;letter-spacing:-.8px;margin-top:7px;line-height:1.05;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.value.gold{color:#ffd34f}.value.cyan{color:#36d5e7}.value.blue{color:#1769c2}.unit{font-size:12px;font-weight:700;opacity:.78;margin-left:4px}
+.input-wrap{margin-top:9px}.input-wrap label{display:block;font-size:11px;font-weight:750;color:#7a6540;margin-bottom:5px}input[type=number]{width:100%;min-width:0;border:1.5px solid #e7c96f;background:var(--gold);color:var(--goldink);border-radius:11px;padding:10px 11px;font-size:21px;font-weight:850;outline:none;font-variant-numeric:tabular-nums}input[type=number]:focus{border-color:#d49a13;box-shadow:0 0 0 3px #d49a1326}
+.output{background:var(--cyan);border:1px solid #bdebf0;border-radius:16px;padding:14px}.output .label{color:#287487;font-weight:750}.output .value{color:var(--cyanink)}
+.target-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.target-grid .metric,.target-grid .output{padding:12px}.target-grid .value{font-size:clamp(22px,4vw,30px)}
+.converter-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.convert-card{border:1px solid var(--line);background:#fff;border-radius:17px;padding:14px;box-shadow:var(--shadow)}.convert-title{font-size:12px;font-weight:800;color:var(--blue);letter-spacing:.3px}.convert-value{font-size:clamp(24px,4.8vw,32px);font-weight:850;margin-top:8px;color:var(--navy);font-variant-numeric:tabular-nums}.small-input{margin-top:9px}.small-input input{font-size:18px}.note{font-size:12px;color:var(--muted);line-height:1.55;margin:10px 3px 0}
+.summary-list{display:grid;gap:10px}.summary-row{display:flex;justify-content:space-between;gap:14px;align-items:center;padding:14px 15px;background:white;border:1px solid var(--line);border-radius:15px}.summary-row span{color:var(--muted);font-size:13px;font-weight:650}.summary-row strong{font-size:20px;color:var(--navy);font-variant-numeric:tabular-nums;text-align:right}.info-card{line-height:1.65;font-size:14px}.info-card h3{margin:0 0 8px;color:var(--navy)}.info-card p{margin:7px 0;color:#526d87}.legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted)}.dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px}
+.footer{position:fixed;bottom:0;left:0;right:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#f7faffeb;backdrop-filter:blur(12px);border-top:1px solid #dce8f5;z-index:6}.footer-inner{max-width:980px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:10px}.footer-text{font-size:11px;color:#7890a8}.reset{border:1px solid #c9dcef;background:white;color:#37648f;border-radius:12px;padding:9px 13px;font-size:12px;font-weight:750;cursor:pointer}.toast{position:fixed;left:50%;bottom:82px;transform:translateX(-50%);background:#12345a;color:white;padding:10px 15px;border-radius:12px;font-size:12px;opacity:0;pointer-events:none;transition:.2s;z-index:9}.toast.show{opacity:1}
+@media(max-width:620px){.app{padding:12px 11px 95px}.hero{padding:20px 18px;border-radius:21px}.grid2{gap:8px}.metric{padding:11px}.card{padding:11px}.target-grid{gap:6px}.target-grid .metric,.target-grid .output{padding:9px}.target-grid .label{font-size:10px}.target-grid .value{font-size:21px}.section{margin-top:15px}.tab{font-size:12px;padding:11px 4px}}
+@media(max-width:380px){.grid2,.converter-grid{grid-template-columns:1fr}.target-grid{grid-template-columns:1fr}.target-grid .value{font-size:26px}}
+</style></head><body>
+<main class="app">
+<header class="hero"><div class="brand">Fuel Calculator</div><div class="tagline">PLAN&nbsp; • &nbsp;CALCULATE&nbsp; • &nbsp;FILL SMART</div><div class="hero-note">เครื่องคำนวณปริมาณเชื้อเพลิง • KG / LITER</div></header>
+<nav class="tabs"><button class="tab active" data-tab="fill">⛽ คำนวณเติม</button><button class="tab" data-tab="result">▤ สรุปผล</button><button class="tab" data-tab="info">ⓘ วิธีใช้</button></nav>
+<section id="fill" class="panel active">
+<section class="section"><div class="section-head"><div class="section-icon">⛽</div><div><h2>Fuel Filling Full Tank</h2><div class="sub">คำนวณปริมาณที่ต้องเติมให้เต็มถัง</div></div></div><div class="card"><div class="grid2">
+<div class="metric"><div class="label">Fuel in tank · KG</div><div class="input-wrap"><label for="fullKg">ปริมาณที่มีอยู่ (แก้ไขได้)</label><input id="fullKg" type="number" min="0" step="any" value="580"></div></div>
+<div class="metric dark"><div class="label">Fuel to add · KG</div><div class="value cyan" id="fullAddKg">690</div><div class="sub" style="color:#c6def7">เป้าหมาย 1,270 KG</div></div>
+<div class="metric"><div class="label">Fuel in tank · L</div><div class="value blue" id="fullLiters">725</div></div>
+<div class="output"><div class="label">Fuel to add · L</div><div class="value" id="fullAddL">863</div><div class="sub">คำนวณตามสูตรเดิม</div></div>
+</div></div></section>
+<section class="section"><div class="section-head"><div class="section-icon">◎</div><div><h2>Fuel Filling As Desired</h2><div class="sub">กำหนดปริมาณเชื้อเพลิงเป้าหมายเอง</div></div></div><div class="card"><div class="target-grid">
+<div class="metric"><div class="label">Fuel in tank · KG</div><div class="input-wrap"><label for="currentKg">มีอยู่ (KG)</label><input id="currentKg" type="number" min="0" step="any" value="780"></div></div>
+<div class="metric"><div class="label">Fuel target · KG</div><div class="input-wrap"><label for="targetKg">ต้องการ (KG)</label><input id="targetKg" type="number" min="0" step="any" value="1000"></div></div>
+<div class="output"><div class="label">Fuel to add · KG</div><div class="value" id="desiredAddKg">220</div></div>
+<div class="metric"><div class="label">Fuel in tank · L</div><div class="value blue" id="currentL">975</div></div>
+<div class="metric"><div class="label">Fuel target · L</div><div class="value blue" id="targetL">1250</div></div>
+<div class="output"><div class="label">Fuel to add · L</div><div class="value" id="desiredAddL">275</div></div>
+</div><p class="note">กรอกค่าปัจจุบันและค่าเป้าหมายในช่องสีเหลือง ระบบจะคำนวณปริมาณที่ต้องเติมให้อัตโนมัติ</p></div></section>
+<section class="section"><div class="section-head"><div class="section-icon">⇄</div><div><h2>Unit Converter</h2><div class="sub">แปลงหน่วย KG ↔ LITER ตามอัตราเดิม</div></div></div><div class="converter-grid">
+<div class="convert-card"><div class="convert-title">KG → LITER</div><div class="small-input"><input id="kgToLInput" aria-label="KG to liter input" type="number" min="0" step="any" value="1270"></div><div class="convert-value"><span id="kgToLResult">1587.5</span><span class="unit">L</span></div></div>
+<div class="convert-card"><div class="convert-title">LITER → KG</div><div class="small-input"><input id="lToKgInput" aria-label="Liter to KG input" type="number" min="0" step="any" value="250"></div><div class="convert-value"><span id="lToKgResult">200</span><span class="unit">KG</span></div></div>
+</div><p class="note">อัตราแปลงตามสูตรต้นฉบับ: 1 KG = 1.25 L และ 1 L = 0.8 KG</p></section></section>
+<section id="result" class="panel"><section class="section"><div class="section-head"><div class="section-icon">▤</div><div><h2>Fuel Summary</h2><div class="sub">สรุปค่าจากข้อมูลที่กรอกล่าสุด</div></div></div><div class="card summary-list">
+<div class="summary-row"><span>เติมให้เต็มถัง · KG</span><strong id="sumFullKg">690</strong></div><div class="summary-row"><span>เติมให้เต็มถัง · L</span><strong id="sumFullL">863</strong></div><div class="summary-row"><span>เติมตามเป้าหมาย · KG</span><strong id="sumDesiredKg">220</strong></div><div class="summary-row"><span>เติมตามเป้าหมาย · L</span><strong id="sumDesiredL">275</strong></div><div class="summary-row"><span>เป้าหมายที่ตั้งไว้ · KG</span><strong id="sumTarget">1,000</strong></div>
+</div><p class="note">ตัวเลขสรุปเปลี่ยนตามค่าที่กรอกในหน้า “คำนวณเติม”</p></section></section>
+<section id="info" class="panel"><section class="section"><div class="section-head"><div class="section-icon">ⓘ</div><div><h2>วิธีใช้งาน</h2><div class="sub">คำอธิบายช่องกรอกและสูตรคำนวณ</div></div></div><div class="card info-card">
+<h3>1. คำนวณเติมเต็มถัง</h3><p>แก้ไขช่อง “ปริมาณที่มีอยู่ (KG)” ระบบคำนวณจากเป้าหมาย 1,270 KG และแสดงปริมาณเป็นลิตร</p>
+<h3>2. คำนวณตามเป้าหมาย</h3><p>กรอกปริมาณปัจจุบันและปริมาณที่ต้องการ ระบบหาผลต่างเป็น KG และแปลงเป็น LITER</p>
+<h3>3. แปลงหน่วย</h3><p>กรอกค่า KG เพื่อแปลงเป็น LITER หรือกรอก LITER เพื่อแปลงเป็น KG</p>
+<h3>สีของช่องข้อมูล</h3><div class="legend"><span><i class="dot" style="background:#fff2c7"></i>สีเหลือง = กรอกข้อมูล</span><span><i class="dot" style="background:#dff7fa"></i>สีฟ้า = ผลคำนวณ</span></div>
+<p style="margin-top:14px">หมายเหตุ: ใช้ค่าคงที่และสูตรตามไฟล์ Excel ต้นฉบับ ไม่ใช่การวัดระดับเชื้อเพลิงจากเซนเซอร์จริง</p>
+</div></section></section>
+</main>
+<footer class="footer"><div class="footer-inner"><div class="footer-text">FUEL CALCULATOR · APP</div><div style="display:flex;gap:8px;align-items:center"><button class="reset" id="installBtn" style="display:none;background:#1769c2;color:white;border-color:#1769c2">⬇ ติดตั้งแอป</button><button class="reset" id="resetBtn">↺ คืนค่าเริ่มต้น</button></div></div></footer><div class="toast" id="toast">คืนค่าเริ่มต้นแล้ว</div>
+
+<script>
+const $=id=>document.getElementById(id),fields=['fullKg','currentKg','targetKg','kgToLInput','lToKgInput'];
+const num=id=>{const v=parseFloat($(id).value);return Number.isFinite(v)?Math.max(0,v):0};
+const fmt=n=>Number(n).toLocaleString('en-US',{maximumFractionDigits:2});
+const set=(id,n)=>$(id).textContent=fmt(n);
+function save(){try{const d={};fields.forEach(id=>d[id]=$(id).value);localStorage.setItem('fuelCalcInputs',JSON.stringify(d))}catch(e){}}
+function update(){
+ const f=num('fullKg'),fa=1270-f,fl=f*1.25, fal=1588-fl;
+ set('fullAddKg',fa);set('fullLiters',fl);set('fullAddL',fal);
+ const c=num('currentKg'),t=num('targetKg'),da=t-c,cl=c*1.25,tl=t*1.25,dal=tl-cl;
+ set('desiredAddKg',da);set('currentL',cl);set('targetL',tl);set('desiredAddL',dal);
+ set('kgToLResult',num('kgToLInput')*1.25);set('lToKgResult',num('lToKgInput')*.8);
+ set('sumFullKg',fa);set('sumFullL',fal);set('sumDesiredKg',da);set('sumDesiredL',dal);set('sumTarget',t);save();
+}
+function restore(){try{const d=JSON.parse(localStorage.getItem('fuelCalcInputs')||'{}');fields.forEach(id=>{if(d[id]!==undefined)$(id).value=d[id]})}catch(e){}}
+fields.forEach(id=>$(id).addEventListener('input',update));
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.tab));window.scrollTo({top:0,behavior:'smooth'})}));
+$('resetBtn').addEventListener('click',()=>{const d={fullKg:580,currentKg:780,targetKg:1000,kgToLInput:1270,lToKgInput:250};Object.entries(d).forEach(([k,v])=>$(k).value=v);try{localStorage.removeItem('fuelCalcInputs')}catch(e){}update();const t=$('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1600)});
+restore();update();
+if('serviceWorker'in navigator&&location.protocol.startsWith('http'))addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+
+// Install App (PWA)
+let deferredPrompt;
+const installBtn = $('installBtn');
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = 'inline-block';
+});
+installBtn.addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  if (outcome === 'accepted') {
+    installBtn.style.display = 'none';
+    const t = $('toast');
+    t.textContent = 'ติดตั้งแอปเรียบร้อย';
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+  deferredPrompt = null;
+});
+window.addEventListener('appinstalled', () => {
+  installBtn.style.display = 'none';
+  deferredPrompt = null;
+});
+// Hide install button if already running as installed app
+if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+  installBtn.style.display = 'none';
+}
+</script></body></html>
